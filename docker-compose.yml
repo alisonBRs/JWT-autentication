@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  postgres:
+    image: bitnami/postgresql:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRESQL_USERNAME=alison
+      - POSTGRESQL_PASSWORD=senha123
+      - POSTGRESQL_DATABASE=jwt-autenticator
+    volumes:
+      - "./docker-database:/bitnami/postgresql"
