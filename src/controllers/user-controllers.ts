@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { userServices } from "../services/user-services";
 import { PostUserType } from "../interfaces/post-user-type";
 import { prisma } from "../initialize-prisma/initialize-prisma";
+import bcrypt from "bcrypt";
 
 export class UserControllers {
   async getUser(req: Request, res: Response) {
@@ -24,16 +25,17 @@ export class UserControllers {
         return res.status(400).json({ error: `email ${email} already exists` });
       }
 
-      await userServices.postUserData({ name, password, email });
+      const passwordIncrypted: string = await bcrypt.hash(password, 10);
 
-      const result = {
+      const result = await userServices.postUserData({
         name,
-        password,
+        password: passwordIncrypted,
         email,
-        post: [],
-      };
+      });
 
-      return res.status(200).json(result);
+      const { password: undefined, ...user } = result;
+
+      return res.status(200).json(user);
     } catch (err) {
       console.error(err);
     }

@@ -13,7 +13,7 @@ export class UserServices {
   }
 
   async postUserData({ name, password, email }: PostUserType) {
-    const postData = await prisma.user.createMany({
+    const postData = await prisma.user.create({
       data: {
         name,
         password,
