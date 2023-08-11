@@ -10,5 +10,6 @@ export class User implements RouteType {
     this.router.get("/", userControllers.getUser);
     this.router.post("/", userControllers.postUser);
     this.router.delete("/:id", userControllers.deleteUser);
+    this.router.post("/login", userControllers.login);
   }
 }

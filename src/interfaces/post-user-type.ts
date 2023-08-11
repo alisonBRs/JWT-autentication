@@ -1,5 +1,5 @@
 export interface PostUserType {
-  name: string;
+  name?: string;
   password: string;
   email: string;
 }

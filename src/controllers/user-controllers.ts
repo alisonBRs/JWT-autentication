@@ -62,6 +62,31 @@ export class UserControllers {
       console.error(err);
     }
   }
+
+  async login(req: Request, res: Response) {
+    const { email, password }: PostUserType = req.body;
+
+    const user = await prisma.user.findUnique({ where: { email } });
+
+    try {
+      if (!user) {
+        return res.status(401).json({ error: "email or password not found" });
+      }
+
+      const verifyPassword = await bcrypt.compare(
+        password,
+        user?.password as string
+      );
+
+      if (!verifyPassword) {
+        return res.status(401).json({ error: "email or password not found" });
+      }
+
+      return res.status(202).json({ success: "login access accepted" });
+    } catch (err) {
+      console.error(err);
+    }
+  }
 }
 
 export const userControllers = new UserControllers();
