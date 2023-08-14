@@ -3,7 +3,6 @@ import { userServices } from "../services/user-services";
 import { PostUserType } from "../interfaces/post-user-type";
 import { prisma } from "../initialize-prisma/initialize-prisma";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 
 export class UserControllers {
   async getUser(req: Request, res: Response) {
