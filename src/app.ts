@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { RouteType } from "./interfaces/route-type.routes";
+import { corsOption } from "./cors-options/cors-options";
 
 export class App {
   app: express.Application = express();
@@ -12,7 +13,7 @@ export class App {
 
   public middlewares() {
     this.app.use(express.json());
-    this.app.use(cors());
+    this.app.use(cors(corsOption));
   }
 
   public initRoute({ path, router }: RouteType) {

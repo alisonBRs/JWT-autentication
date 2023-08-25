@@ -32,13 +32,20 @@ class UserLogin {
       const { password: _, ...userData } = user;
 
       const token = jwt.sign({ id: user.id }, process.env.token_key as string, {
-        expiresIn: "8h",
+        expiresIn: "1h",
       });
 
-      return res.status(202).json({
-        user: userData,
-        token,
-      });
+      return res
+        .status(202)
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: true,
+          maxAge: 1000000,
+        })
+        .json({
+          user: userData,
+          token,
+        });
     } catch (err) {
       console.error(err);
     }
