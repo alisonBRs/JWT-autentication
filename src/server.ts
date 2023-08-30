@@ -1,7 +1,7 @@
 import { App } from "./app";
 import { User } from "./routes";
 
-const port: number = 3000;
+const port: number = 3005;
 const url: string = `http://localhost:${port}`;
 const message: string = `Server running at url port: ${url}`;
 

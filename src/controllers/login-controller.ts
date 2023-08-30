@@ -41,6 +41,7 @@ class UserLogin {
           httpOnly: true,
           secure: true,
           maxAge: 1000000,
+          domain: "mydomain.com",
         })
         .json({
           user: userData,
@@ -54,11 +55,11 @@ class UserLogin {
   async getProfile(req: Request, res: Response) {
     const { authorization } = req.headers;
 
+    const token = authorization?.split(" ")[1] as string;
+
     if (!authorization) {
       return res.status(401).json({ error: "User not authorized" });
     }
-
-    const token = authorization.split(" ")[1];
 
     const { id } = jwt.verify(
       token,
