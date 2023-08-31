@@ -32,7 +32,7 @@ class UserLogin {
       const { password: _, ...userData } = user;
 
       const token = jwt.sign({ id: user.id }, process.env.token_key as string, {
-        expiresIn: "1h",
+        expiresIn: "10s",
       });
 
       return res
@@ -61,20 +61,24 @@ class UserLogin {
       return res.status(401).json({ error: "User not authorized" });
     }
 
-    const { id } = jwt.verify(
-      token,
-      process.env.token_key as string
-    ) as PayLoad;
+    try {
+      const { id } = jwt.verify(
+        token,
+        process.env.token_key as string
+      ) as PayLoad;
 
-    if (!id) {
-      return res.status(401).json({ error: "User not authorized" });
+      if (!id) {
+        return res.status(401).json({ error: "User not authorized" });
+      }
+
+      const user = await prisma.user.findUnique({ where: { id } });
+
+      const { password: _, ...loggedUser } = user as PayLoad;
+
+      return res.json({ loggedUser });
+    } catch (err: any) {
+      res.status(401).json({ error: "User not authorized" });
     }
-
-    const user = await prisma.user.findUnique({ where: { id } });
-
-    const { password: _, ...loggedUser } = user as PayLoad;
-
-    return res.json({ loggedUser });
   }
 }
 
